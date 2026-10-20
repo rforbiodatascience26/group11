@@ -37,6 +37,16 @@ ggplot(data = my_data,
   labs()
 ```
 
+#### New feature
+
+dijchjbc
+
+```{r}
+1 + 1
+x <- c(1, 2, 3)
+mean(x)
+```
+
 ## Sanjay
 
 This is lab 7 Git Hub Exercises

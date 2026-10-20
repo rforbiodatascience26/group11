@@ -86,11 +86,9 @@ a <- c(56,87,90,1,456)
 sort(a)
 ```
 
-#### New Feature
-
-I have nothing new to add
+## New feature
 
 ```{r}
-a <- c(34,76,56,87,97,1,2,342,54,65,76)
-sort(a, decreasing = TRUE)
+fact <- c("Harry Kane for ballon d'or")
+fact
 ```

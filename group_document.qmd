@@ -6,6 +6,17 @@ editor: visual
 
 ## Bharati
 
+hiii
+
+```{r}
+bro <- c(1,2,4)
+```
+
+```{r}
+bro*2
+
+```
+
 ## Jithin
 
 ## Maria

@@ -23,4 +23,12 @@ bro*2
 
 ## Pratyush
 
+```{r}
+ggplot(data = my_data,
+       mapping = aes(x = variable_1_name,
+                     y = variable_2_name)) +
+  geom_something() +
+  labs()
+```
+
 ## Sanjay

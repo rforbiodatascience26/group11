@@ -25,6 +25,11 @@ xyz = c(1,1,1,1)
 abc + xyz
 ```
 
+```{r}
+hi <- c("Hello world")
+hi
+```
+
 ## Maria
 
 ## Pratyush

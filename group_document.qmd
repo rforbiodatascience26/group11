@@ -40,6 +40,23 @@ m <- "hello world"
 m
 ```
 
+New feature:
+
+Members of group 11:
+
+```{r}
+b <- "bharati"
+j <- "jithin"
+m <- "maria"
+p <- "pratyush"
+s <- "sanjay"
+b
+j
+m
+p
+s
+```
+
 ## Pratyush
 
 ```{r}

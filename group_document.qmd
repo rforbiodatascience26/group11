@@ -26,6 +26,13 @@ abc + xyz
 ```
 
 ## Maria
+```{r}
+a <- 9
+b <- 7
+a+b
+m <- "hello world"
+m
+```
 
 ## Pratyush
 

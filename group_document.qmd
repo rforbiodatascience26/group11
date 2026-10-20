@@ -13,3 +13,10 @@ editor: visual
 ## Pratyush
 
 ## Sanjay
+
+This is lab 7 Git Hub Exercises
+
+```{r}
+a <- c(56,87,90,1,456)
+sort(a)
+```

@@ -6,6 +6,17 @@ editor: visual
 
 ## Bharati
 
+hiii
+
+```{r}
+bro <- c(1,2,4)
+```
+
+```{r}
+bro*2
+
+```
+
 ## Jithin
 
 ```{r}
@@ -17,5 +28,13 @@ abc + xyz
 ## Maria
 
 ## Pratyush
+
+```{r}
+ggplot(data = my_data,
+       mapping = aes(x = variable_1_name,
+                     y = variable_2_name)) +
+  geom_something() +
+  labs()
+```
 
 ## Sanjay

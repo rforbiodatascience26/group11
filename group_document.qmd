@@ -4,99 +4,12 @@ format: html
 editor: visual
 ---
 
-## Bharati
+## Background
 
-hiii
+## Aim
 
-```{r}
-bro <- c(1,2,4)
-```
+## Load Libraries
 
-```{r}
-bro*2
+## Load Data
 
-```
-
-### New Feature
-
-```{r}
-bro*67
-```
-
-This is more text yay
-
-## Jithin
-
-```{r}
-abc = c(7,7,7,7)
-xyz = c(1,1,1,1)
-abc + xyz
-```
-
-```{r}
-hi <- c("Hello world")
-hi
-```
-
-## Maria
-
-```{r}
-a <- 9
-b <- 7
-a+b
-m <- "hello world"
-m
-```
-
-New feature:
-
-Members of group 11:
-
-```{r}
-b <- "bharati"
-j <- "jithin"
-m <- "maria"
-p <- "pratyush"
-s <- "sanjay"
-b
-j
-m
-p
-s
-```
-
-## Pratyush
-
-```{r}
-ggplot(data = my_data,
-       mapping = aes(x = variable_1_name,
-                     y = variable_2_name)) +
-  geom_something() +
-  labs()
-```
-
-#### New feature
-
-dijchjbc
-
-```{r}
-1 + 1
-x <- c(1, 2, 3)
-mean(x)
-```
-
-## Sanjay
-
-This is lab 7 Git Hub Exercises
-
-```{r}
-a <- c(56,87,90,1,456)
-sort(a)
-```
-
-## New feature
-
-```{r}
-fact <- c("Harry Kane for ballon d'or")
-fact
-```
+## Data Description

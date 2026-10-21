@@ -4,12 +4,52 @@ format: html
 editor: visual
 ---
 
-## Background
+# 1. Background
 
-## Aim
+# 2. Aim
 
-## Load Libraries
+# 3. Load Libraries
 
-## Load Data
+```{r}
 
-## Data Description
+```
+
+# 4. Load Data
+
+```{r}
+
+```
+
+# 5. Data Description
+
+# 6. Analysis
+
+## 6.1 Model Fitting
+
+```{r}
+
+```
+
+## 6.2 Patient Projections
+
+```{r}
+
+```
+
+## 6.3 Rotation Matrix
+
+```{r}
+
+```
+
+## 6.4 Variance Explained
+
+```{r}
+
+```
+
+## 6.5 Summary Table & Conclusion
+
+```{r}
+
+```

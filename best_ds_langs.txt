@@ -8,5 +8,9 @@ Top 10 Bio Data Science Languages of ALL Time:
 4. has
 3. different
 2. tastes
+<<<<<<< HEAD
+1. C++ 
+=======
 1. R is superior!
+>>>>>>> 7cc8830712979d2d3b34baff0dffe54872610168
 

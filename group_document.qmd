@@ -58,6 +58,8 @@ pca_fit <- gravier_df |>
   prcomp(scale = TRUE)
 ```
 
+The PCA model is fitted to the scaled numeric gene expression data using `prcomp()`. This establishes the core coordinate space required for all subsequent patient projections and gene analyses.
+
 ## 6.2 Patient Projections as Scatter Plot
 
 ```{r}

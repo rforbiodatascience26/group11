@@ -84,7 +84,29 @@ This rotation matrix plot identifies the specific genes that exert the strongest
 ## 6.4 Variance Explained
 
 ```{r}
+#| label: eigenvalues-table
+eigenvalues <- pca_plot |>
+  tidy(matrix = "eigenvalues")
 
+eigenvalues |>
+  slice_head(n = 10)
+
+#| label: eigenvalues-plot
+eigenvalues |>
+  filter(PC <= 10) |>
+  ggplot(aes(x = PC, y = percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) +
+  labs(
+    title = "Variance explained by the first 10 PCs",
+    x = "Principal component",
+    y = "Variance explained"
+  ) +
+  theme_minimal()
 ```
 
 ## 6.5 Summary Table & Conclusion

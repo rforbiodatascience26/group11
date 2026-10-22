@@ -25,8 +25,9 @@ The aim of this micro-report is to perform and evaluate a Principal Component An
 # 3. Load Libraries
 
 ```{r}
-library(tidyverse)
-library(broom)
+library("tidyverse")
+library("broom")
+library("dplyr")
 ```
 
 # 4. Load Data
@@ -130,5 +131,24 @@ This plot illustrates the proportion of total variance captured by each of the f
 ## 6.5 Summary Table & Conclusion
 
 ```{r}
+top_genes_table <- pca_fit |>
+  tidy(matrix = "rotation") |>
+  pivot_wider(names_from = PC,
+    names_prefix = "PC",
+    values_from = value) |>
+  mutate(magnitude = sqrt(PC1^2 + PC2^2)) |>
+  slice_max(magnitude, n = 5) |>
+  arrange(desc(magnitude)) |>
+  mutate(Rank = row_number()) |>
+  select(Rank,
+         Gene = column, 
+         PC1, 
+         PC2, 
+         magnitude)
 
+knitr::kable(top_genes_table,
+  digits = 3,
+  caption = "Top 5 Genes Contributing Most to Principal Components 1 and 2")
 ```
+
+Principal Component Analysis (PCA) successfully reduced the high-dimensional gene expression data into a small number of principal components while preserving the major sources of variation. The patient projection plot provided an overview of the relationships between samples, while the rotation matrix identified the genes contributing most strongly to the first two principal components. Finally, the variance explained analysis showed how much information was captured by each principal component, helping to assess the effectiveness of the dimensionality reduction. Overall, this tidyverse-based workflow demonstrates a reproducible approach for performing, interpreting, and visualizing PCA on high-dimensional biological data.

@@ -6,6 +6,12 @@ editor: visual
 
 # 1. Background
 
+Modern molecular biology often generates high-dimensional data with many more variables than samples. Because manually inspecting thousands of correlated variables is impossible, dimensionality reduction is an essential first exploratory step.
+
+Principal Component Analysis (PCA) is a standard unsupervised, linear technique for this task. It projects standardized data onto new, uncorrelated axes (principal components) ranked by the amount of variance they capture. The rotation matrix reveals how individual variables drive these components. Because PCA does not use outcome labels, any sample separation in the PC space inherently reflects underlying biological structure, making it ideal for spotting patterns and outliers.
+
+While base R computes PCA via `prcomp()`, its native output is not tidyverse-compatible. This micro-report applies the `broom` package (Wilke, 2020) to tidy the PCA results of the `gravier` dataset for downstream wrangling and visualization. Furthermore, this analysis serves as an exercise in reproducible, collaborative data science developed via Quarto and GitHub pull requests.
+
 # 2. Aim
 
 The aim of this micro-report is to perform and evaluate a Principal Component Analysis (PCA) on high-dimensional gene expression data from the **`gravier`** breast cancer cohort using a tidyverse-compatible workflow with the `broom` package. Specifically, this report aims to:

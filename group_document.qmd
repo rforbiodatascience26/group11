@@ -8,6 +8,14 @@ editor: visual
 
 # 2. Aim
 
+The aim of this micro-report is to perform and evaluate a Principal Component Analysis (PCA) on high-dimensional gene expression data from the **`gravier`** breast cancer cohort using a tidyverse-compatible workflow with the `broom` package. Specifically, this report aims to:
+
+1.  Reduce dimensionality to project patient samples into Principal Component (PC) space and examine whether gene expression profiles separate clinical outcomes (good vs. poor metastasis-free survival).
+
+2.  Extract and visualize the rotation matrix to identify the most influential driving genes.
+
+3.  Quantify and evaluate the proportion of total variance explained by each principal component.
+
 # 3. Load Libraries
 
 ```{r}
@@ -64,13 +72,54 @@ ggplot(pca_data, aes(x = .fittedPC1, y = .fittedPC2, colour = outcome)) +
 ## 6.3 Rotation Matrix
 
 ```{r}
+arrow_style <- arrow(angle = 20, ends = "first", type = "closed", length = grid::unit(6, "pt"))
+
+pca_fit |> 
+  tidy(matrix = "rotation") |> 
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") |> 
+  mutate(magnitude = sqrt(PC1^2 + PC2^2)) |> 
+  slice_max(magnitude, n = 6) |> 
+  ggplot(aes(x = PC1, y = PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style, color = "#56B4E9") +
+  geom_text(aes(label = column), hjust = 1.1, nudge_x = -0.02, color = "#904C2F", size = 3) +
+  coord_fixed() +
+  labs(
+    title = "Top Influential Genes (Rotation Matrix)", 
+    x = "Rotation PC1", 
+    y = "Rotation PC2"
+  ) +
+  cowplot::theme_minimal_grid(12)  # Added cowplot:: prefix here to fix the error!
 
 ```
+
+This rotation matrix plot identifies the specific genes that exert the strongest influence on Principal Components 1 and 2, highlighting the primary molecular drivers shaping the patient separation.
 
 ## 6.4 Variance Explained
 
 ```{r}
+#| label: eigenvalues-table
+eigenvalues <- pca_plot |>
+  tidy(matrix = "eigenvalues")
 
+eigenvalues |>
+  slice_head(n = 10)
+
+#| label: eigenvalues-plot
+eigenvalues |>
+  filter(PC <= 10) |>
+  ggplot(aes(x = PC, y = percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) +
+  labs(
+    title = "Variance explained by the first 10 PCs",
+    x = "Principal component",
+    y = "Variance explained"
+  ) +
+  theme_minimal()
 ```
 
 ## 6.5 Summary Table & Conclusion

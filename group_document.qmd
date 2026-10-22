@@ -1,5 +1,6 @@
 ---
-title: "group_document.qmd"
+title: "Lab 7 Assignment: Group 11"
+
 format: html
 editor: visual
 ---

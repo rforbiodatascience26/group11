@@ -34,7 +34,12 @@ The two outcome classes are imbalanced: about two thirds of the patients have a 
 ## 6.1 Model Fitting
 
 ```{r}
+gravier_df <- as_tibble(gravier$x) |>
+  mutate(outcome = gravier$y)
 
+pca_plot <- gravier_df |>
+  select(where(is.numeric)) |>
+  prcomp(scale = TRUE)
 ```
 
 ## 6.2 Patient Projections

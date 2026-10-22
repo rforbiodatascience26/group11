@@ -11,7 +11,8 @@ editor: visual
 # 3. Load Libraries
 
 ```{r}
-
+library(tidyverse)
+library(broom)
 ```
 
 # 4. Load Data

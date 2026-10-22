@@ -1,0 +1,157 @@
+---
+title: "Lab 7 Assignment: Group 11"
+
+format: html
+editor: visual
+---
+
+# 1. Background
+
+Modern molecular biology often generates high-dimensional data with many more variables than samples. Because manually inspecting thousands of correlated variables is impossible, dimensionality reduction is an essential first exploratory step.
+
+Principal Component Analysis (PCA) is a standard unsupervised, linear technique for this task. It projects standardized data onto new, uncorrelated axes (principal components) ranked by the amount of variance they capture. The rotation matrix reveals how individual variables drive these components. Because PCA does not use outcome labels, any sample separation in the PC space inherently reflects underlying biological structure, making it ideal for spotting patterns and outliers.
+
+While base R computes PCA via `prcomp()`, its native output is not tidyverse-compatible. This micro-report applies the `broom` package (Wilke, 2020) to tidy the PCA results of the `gravier` dataset for downstream wrangling and visualization. Furthermore, this analysis serves as an exercise in reproducible, collaborative data science developed via Quarto and GitHub pull requests.
+
+# 2. Aim
+
+The aim of this micro-report is to perform and evaluate a Principal Component Analysis (PCA) on high-dimensional gene expression data from the **`gravier`** breast cancer cohort using a tidyverse-compatible workflow with the `broom` package. Specifically, this report aims to:
+
+1.  Reduce dimensionality to project patient samples into Principal Component (PC) space and examine whether gene expression profiles separate clinical outcomes (good vs. poor metastasis-free survival).
+
+2.  Extract and visualize the rotation matrix to identify the most influential driving genes.
+
+3.  Quantify and evaluate the proportion of total variance explained by each principal component.
+
+# 3. Load Libraries
+
+```{r}
+library("tidyverse")
+library("broom")
+library("dplyr")
+```
+
+# 4. Load Data
+
+```{r}
+gravierdata <- load("gravier.RData")
+```
+
+# 5. Data Description
+
+The gravier data come from Gravier et al. (2010), a study of small, node-negative invasive ductal breast carcinomas (T1T2N0). The study aimed to find a molecular signature that predicts metastasis in this patient group. The data contain 168 patients, each measured on 2905 variables using comparative genomic hybridization arrays. Each patient is labelled by outcome: 111 had no event five years after diagnosis (good outcome) and 57 developed early metastasis (poor outcome).
+
+In R, the data are combined into one tibble, `gravier_df`, where each row is a patient. It has one categorical column, `outcome`, and 2905 numeric columns holding the measurements. The number of variables is far larger than the number of patients, which is typical for omics data and is the reason a dimensionality reduction method such as PCA is useful here.
+
+The two outcome classes are imbalanced: about two thirds of the patients have a good outcome. There are no missing values, so no observations need to be removed before the PCA. `prcomp()` only accepts numeric input, so `outcome` is left out of the PCA and joined back afterwards for colouring the plots.
+
+# 6. Analysis
+
+## 6.1 Model Fitting
+
+```{r}
+gravier_df <- as_tibble(gravier$x) |>
+  mutate(outcome = gravier$y)
+
+pca_fit <- gravier_df |>
+  select(where(is.numeric)) |>
+  prcomp(scale = TRUE)
+```
+
+The PCA model is fitted to the scaled numeric gene expression data using `prcomp()`. This establishes the core coordinate space required for all subsequent patient projections and gene analyses.
+
+## 6.2 Patient Projections as Scatter Plot
+
+```{r}
+pca_data <- augment(pca_fit) |>
+  mutate(outcome = gravier_df$outcome)
+
+
+ggplot(pca_data, aes(x = .fittedPC1, y = .fittedPC2, colour = outcome)) +
+  geom_point(alpha = 0.7, size = 2) +
+  scale_color_manual(values = c("good" = "#0072B2", "poor" = "#D55E00")) +
+  labs(
+    title = "PCA of Gravier Data: Patient Projections",
+    x = "Principal Component 1",
+    y = "Principal Component 2",
+    colour = "Clinical Outcome"
+  ) +
+  theme_minimal()
+```
+
+We plotted the observations along the first two principal components (PC1 and PC2), colouring each point by its outcome group (`good` or `poor`) as a scatter plot. This visualisation allows us to explore whether the two groups show distinct patterns or overlap in the main sources of variation in the data.
+
+## 6.3 Rotation Matrix
+
+```{r}
+arrow_style <- arrow(angle = 20, ends = "first", type = "closed", length = grid::unit(6, "pt"))
+
+pca_fit |> 
+  tidy(matrix = "rotation") |> 
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") |> 
+  mutate(magnitude = sqrt(PC1^2 + PC2^2)) |> 
+  slice_max(magnitude, n = 6) |> 
+  ggplot(aes(x = PC1, y = PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style, color = "#56B4E9") +
+  geom_text(aes(label = column), hjust = 1.1, nudge_x = -0.02, color = "#904C2F", size = 3) +
+  coord_fixed() +
+  labs(
+    title = "Top Influential Genes (Rotation Matrix)", 
+    x = "Rotation PC1", 
+    y = "Rotation PC2"
+  ) +
+  cowplot::theme_minimal_grid(12)
+
+```
+
+This rotation matrix plot identifies the specific genes that exert the strongest influence on Principal Components 1 and 2, highlighting the primary molecular drivers shaping the patient separation.
+
+## 6.4 Variance Explained
+
+```{r}
+eigenvalues <- pca_fit |>
+  tidy(matrix = "eigenvalues")
+
+eigenvalues |>
+  filter(PC <= 10) |>
+  ggplot(aes(x = PC, y = percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) +
+  labs(
+    title = "Variance Explained by the First 10 PCs",
+    x = "Principal Component",
+    y = "Variance Explained"
+  ) +
+  theme_minimal()
+```
+
+This plot illustrates the proportion of total variance captured by each of the first 10 principal components. The tallest bar shows that PC1 accounts for the largest single share of variation in the gene expression data, with subsequent components explaining progressively less, helping to identify how many dimensions are needed to capture the dataset's core complexity.
+
+## 6.5 Summary Table & Conclusion
+
+```{r}
+top_genes_table <- pca_fit |>
+  tidy(matrix = "rotation") |>
+  pivot_wider(names_from = PC,
+    names_prefix = "PC",
+    values_from = value) |>
+  mutate(magnitude = sqrt(PC1^2 + PC2^2)) |>
+  slice_max(magnitude, n = 5) |>
+  arrange(desc(magnitude)) |>
+  mutate(Rank = row_number()) |>
+  select(Rank,
+         Gene = column, 
+         PC1, 
+         PC2, 
+         magnitude)
+
+knitr::kable(top_genes_table,
+  digits = 3,
+  caption = "Top 5 Genes Contributing Most to Principal Components 1 and 2")
+```
+
+Principal Component Analysis (PCA) successfully reduced the high-dimensional gene expression data into a small number of principal components while preserving the major sources of variation. The patient projection plot provided an overview of the relationships between samples, while the rotation matrix identified the genes contributing most strongly to the first two principal components. Finally, the variance explained analysis showed how much information was captured by each principal component, helping to assess the effectiveness of the dimensionality reduction. Overall, this tidyverse-based workflow demonstrates a reproducible approach for performing, interpreting, and visualizing PCA on high-dimensional biological data.

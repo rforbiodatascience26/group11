@@ -122,6 +122,8 @@ eigenvalues |>
   theme_minimal()
 ```
 
+This plot illustrates the proportion of total variance captured by each of the first 10 principal components. The tallest bar shows that PC1 accounts for the largest single share of variation in the gene expression data, with subsequent components explaining progressively less, helping to identify how many dimensions are needed to capture the dataset's core complexity.
+
 ## 6.5 Summary Table & Conclusion
 
 ```{r}

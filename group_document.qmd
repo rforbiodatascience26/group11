@@ -33,7 +33,7 @@ gravierdata <- load("gravier.RData")
 
 The gravier data come from Gravier et al. (2010), a study of small, node-negative invasive ductal breast carcinomas (T1T2N0). The study aimed to find a molecular signature that predicts metastasis in this patient group. The data contain 168 patients, each measured on 2905 variables using comparative genomic hybridization arrays. Each patient is labelled by outcome: 111 had no event five years after diagnosis (good outcome) and 57 developed early metastasis (poor outcome).
 
-In R, the data are combined into one tibble, `gravier_data`, where each row is a patient. It has one categorical column, `outcome`, and 2905 numeric columns holding the measurements. The number of variables is far larger than the number of patients, which is typical for omics data and is the reason a dimensionality reduction method such as PCA is useful here.
+In R, the data are combined into one tibble, `gravier_df`, where each row is a patient. It has one categorical column, `outcome`, and 2905 numeric columns holding the measurements. The number of variables is far larger than the number of patients, which is typical for omics data and is the reason a dimensionality reduction method such as PCA is useful here.
 
 The two outcome classes are imbalanced: about two thirds of the patients have a good outcome. There are no missing values, so no observations need to be removed before the PCA. `prcomp()` only accepts numeric input, so `outcome` is left out of the PCA and joined back afterwards for colouring the plots.
 

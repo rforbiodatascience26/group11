@@ -18,7 +18,7 @@ library(broom)
 # 4. Load Data
 
 ```{r}
-gravierdata <- load("/net/pupil1/home/people/s263774/Projects/R_For_Bio_Data_Science_s263774/data/gravier.RData")
+gravierdata <- load("data/gravier.RData")
 ```
 
 # 5. Data Description

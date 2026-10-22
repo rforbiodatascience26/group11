@@ -46,6 +46,19 @@ pca_plot <- gravier_df |>
 
 ```{r}
 
+
+pca_data <- augment(pca_plot) |>
+  mutate(outcome = gravier_df$outcome)
+
+ggplot(pca_data, aes(x = .fittedPC1, y = .fittedPC2, colour = outcome)) +
+  geom_point(size = 2) +
+  labs(
+    title = "PCA of Gravier Data",
+    x = ".fittedPC1",
+    y = ".fittedPC2",
+    colour = "Outcome"
+  ) +
+  theme_minimal()
 ```
 
 ## 6.3 Rotation Matrix

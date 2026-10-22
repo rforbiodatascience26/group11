@@ -6,6 +6,10 @@ editor: visual
 
 # 1. Background
 
+The gravier data come from Gravier et al. (2010), a study of small, node-negative invasive ductal breast carcinomas (T1T2N0). The study aimed to find a molecular signature that predicts metastasis in this patient group. The data contain 168 patients, each measured on 2905 variables using comparative genomic hybridization arrays. Each patient is labelled by outcome: 111 had no event five years after diagnosis (good outcome) and 57 developed early metastasis (poor outcome).
+
+With far more variables than patients, the data are hard to inspect directly. Principal Component Analysis (PCA) summarises the variation in many variables into a few uncorrelated principal components that can be plotted. This micro-report is a code-along of Wilke (2020), applied to the gravier data to see whether the main axes of variation relate to patient outcome.
+
 # 2. Aim
 
 # 3. Load Libraries

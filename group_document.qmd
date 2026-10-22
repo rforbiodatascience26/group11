@@ -50,12 +50,9 @@ pca_fit <- gravier_df |>
   prcomp(scale = TRUE)
 ```
 
-## 6.2 Observation Projections as Scatter Plot
-
-We plotted the observations along the first two principal components (PC1 and PC2), colouring each point by its outcome group (`good` or `poor`) as a scatter plot. This visualisation allows us to explore whether the two groups show distinct patterns or overlap in the main sources of variation in the data.
+## 6.2 Patient Projections as Scatter Plot
 
 ```{r}
-
 pca_data <- augment(pca_plot) |>
   mutate(outcome = gravier_df$outcome)
 
@@ -71,6 +68,8 @@ ggplot(pca_data, aes(x = .fittedPC1, y = .fittedPC2, colour = outcome)) +
   ) +
   theme_minimal()
 ```
+
+We plotted the observations along the first two principal components (PC1 and PC2), colouring each point by its outcome group (`good` or `poor`) as a scatter plot. This visualisation allows us to explore whether the two groups show distinct patterns or overlap in the main sources of variation in the data.
 
 ## 6.3 Rotation Matrix
 

@@ -53,7 +53,7 @@ pca_fit <- gravier_df |>
 ## 6.2 Patient Projections as Scatter Plot
 
 ```{r}
-pca_data <- augment(pca_plot) |>
+pca_data <- augment(pca_fit) |>
   mutate(outcome = gravier_df$outcome)
 
 
